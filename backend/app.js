@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
-//const path = require('path');
+const path = require('path');
 
-//const stuffRoutes = require('./routes/stuff');
+const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 const app = express();
 
@@ -14,18 +14,17 @@ app.use((req, res, next) => {
   next();
 });  
 
-mongoose.connect('mongodb+srv://Meddy971:Fairytail97129@cluster0.5dbv0vg.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://Sauce971:Fairytail97129@cluster0.5dbv0vg.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+
 app.use(express.json());
-app.use('/api/stuff', bodyParser.json());
-
-//app.use('/api/stuff', stuffRoutes);
+app.use('/api/sauces', bodyParser.json());
+app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
-
-//app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 module.exports = app;
