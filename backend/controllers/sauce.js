@@ -100,12 +100,11 @@ exports.deleteSauce = (req, res, next) => {
 
 exports.likeOrNot = (req, res, next) => {
       const userId = req.body.userId;
-      const sauceId = req.param.id;
-
+      const sauceId = req.params.id;
       if (req.body.like ==1 ){
         Sauce.updateOne(
           {_id: sauceId },
-          {$inc: {likes: 1}, $push: { usersLiked: userId } }
+          { $push: { usersLiked: userId }, $inc: {likes: +1} }
         )
         .then(()=>res.status(200).json({ messages: "Tu aimes cette sauce "}))
         .catch((error)=>res.status(400).json({error}));
@@ -121,6 +120,7 @@ exports.likeOrNot = (req, res, next) => {
             )
             .catch((error)=>res.status(400).json({ error }))
           } else if ( sauce.usersDisliked.includes(userId)){
+            console.log("je suis dans le dislike")
             Sauce.updateOne(
               {_id:sauceId},
               {$inc: {dislikes: -1}, $pull: {usersDisliked: userId}},
@@ -128,5 +128,12 @@ exports.likeOrNot = (req, res, next) => {
             .then(()=>res.status(200).json({message: "Plus de dislike !"}))
           }
         })
+      } else if (req.body.like == -1){
+        Sauce.updateOne(
+          {_id: sauceId },
+          { $push: { usersDisliked: userId }, $inc: {dislikes: +1} }
+        )
+        .then(()=>res.status(200).json({ messages: "Tu n'aimes cette sauce "}))
+        .catch((error)=>res.status(400).json({error}));
       }
-}
+};
