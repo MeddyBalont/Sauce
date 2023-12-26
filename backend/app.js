@@ -7,6 +7,9 @@ const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 const app = express();
 
+const dotenv = require('dotenv');
+const result = dotenv.config();
+
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -14,7 +17,7 @@ app.use((req, res, next) => {
   next();
 });  
 
-mongoose.connect('mongodb+srv://Sauce971:Fairytail97129@cluster0.5dbv0vg.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGO_URL,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
