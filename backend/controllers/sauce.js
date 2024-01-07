@@ -1,6 +1,7 @@
 const Sauce = require("../models/sauces");
 const fs = require("fs");
 
+//Fonction pour créer la sauce piquante
 exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
   delete sauceObject._id;
@@ -29,6 +30,7 @@ exports.createSauce = (req, res, next) => {
     });
 };
 
+//Fonction pour afficher toutes les sauces piquantes
 exports.getAllSauce = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
@@ -52,6 +54,8 @@ exports.getOneSauce = (req, res, next) => {
     });
 };
 
+
+//Fonction pour modifier la sauce piquante
 exports.modifySauce = (req, res, next) => {
   Sauce.findOne({_id : req.params.id})
   .then((object) => {
@@ -83,6 +87,7 @@ exports.modifySauce = (req, res, next) => {
   .catch((err) => res.status(400).json({err}));
 };
 
+//Fonction pour effacer la sauce piquante
 exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
@@ -104,6 +109,8 @@ exports.deleteSauce = (req, res, next) => {
     });
 };
 
+
+//Fonction pour liker ou dislike la sauce piquante
 exports.likeOrNot = (req, res, next) => {
   const userId = req.body.userId;
   const sauceId = req.params.id;
